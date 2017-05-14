@@ -16,6 +16,6 @@ if [ -z "$PAMPLUGIN" ]; then
 fi
 
 cat << EOF > .install.ok
-OPENVPN=$VPNBIN
-PAMPLUGIN=$PAMPLUGIN
+export OPENVPN=$VPNBIN
+export PAMPLUGIN=$PAMPLUGIN
 EOF

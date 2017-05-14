@@ -40,7 +40,7 @@ tar xf $DST
 if [ -d "$DIR" ]; then
   mv $DIR easy-rsa
   echo >&2 "> Uncompressed to 'easy-rsa' folder."
-  echo "EASYRSA='$PWD"/"easy-rsa'" > .download.ok
+  echo "export EASYRSA='$PWD"/"easy-rsa'" > .download.ok
 else
   echo >&2 "> Uncompress failed"
   exit 1;

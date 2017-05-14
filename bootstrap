@@ -1,8 +1,15 @@
 #!/bin/sh
+{
+  if [ -z "$EASYNETWORKROOT" ]; then
+    echo >&2 "Setting root directory to default: /root/easy-network";
+    EASYNETWORKROOT='/root/easy-network';
+  fi
+} &&
 make -C rsa download &&
 make -C vpn install &&
 cat << EOF > .bootstrap.ok &&
-$PWD/rsa/.install.ok
-$PWD/vpn/.install.ok
+export EASYNETWORKROOT='$EASYNETWORKROOT'
+source $PWD/rsa/.download.ok
+source $PWD/vpn/.install.ok
 EOF
 exit 0
