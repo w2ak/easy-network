@@ -1,4 +1,8 @@
 #!/bin/sh
-make -C easy-rsa download &&
-touch .bootstrap.ok &&
+make -C rsa download &&
+make -C vpn install &&
+cat << EOF > .bootstrap.ok &&
+$PWD/rsa/.install.ok
+$PWD/vpn/.install.ok
+EOF
 exit 0

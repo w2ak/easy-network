@@ -14,4 +14,4 @@ bootstrap: .bootstrap.ok
 
 wipe:
 	@rm -f .bootstrap.ok
-	@make -C easy-rsa wipe
+	@make -C rsa wipe
