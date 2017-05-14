@@ -1,2 +1,4 @@
 #!/bin/sh
-exit 1
+make -C easy-rsa download &&
+touch .bootstrap.ok &&
+exit 0

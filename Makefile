@@ -9,7 +9,9 @@ help:
 bootstrap: .bootstrap.ok
 
 .bootstrap.ok:
-	@./bootstrap > $@
+	@./bootstrap
+	@test -f $@
 
 wipe:
 	@rm -f .bootstrap.ok
+	@make -C easy-rsa wipe

@@ -1,0 +1,49 @@
+#!/bin/sh
+get_sha () {
+  openssl dgst -sha512 "$1" | sed 's/^.*=//' | tr -c -d '[:xdigit:]'
+}
+
+URL=$1; shift;
+SHA=$1; shift;
+DIR=$1; shift;
+
+DST=$(mktemp /tmp/easy-rsa.tgz.XXXXXX)
+NOW=$(mktemp /tmp/now.XXXXXX)
+
+echo >&2 "Downloading easy-rsa from '$URL' to '$DST'."
+if curl -Ls -o $DST $URL; then
+  echo >&2 "> download ok";
+else
+  echo >&2 "> download fail";
+  exit 1;
+fi
+
+if [ "$SHA" = "$(get_sha $DST)" ]; then
+  echo >&2 "> sha512 check ok";
+else
+  echo >&2 "> sha512 check fail";
+  rm -f $DST
+  exit 1;
+fi
+
+if [ -d "easy-rsa" ]; then
+  if rmdir easy-rsa; then
+    echo >&2 "> previous download dir cleaned";
+  else
+    echo >&2 "> couldn't clean previous download dir";
+    exit 1;
+  fi;
+fi
+
+tar xf $DST
+
+if [ -d "$DIR" ]; then
+  mv $DIR easy-rsa
+  echo >&2 "> Uncompressed to 'easy-rsa' folder."
+  echo "EASYRSA='$PWD"/"easy-rsa'" > .download.ok
+else
+  echo >&2 "> Uncompress failed"
+  exit 1;
+fi
+
+exit 0;
