@@ -1,5 +1,5 @@
 #!/bin/sh
-sudo apt-get install openvpn >&2
+sudo apt-get install -y openvpn >&2
 
 VPNBIN=$(which openvpn)
 
@@ -8,7 +8,7 @@ if [ -z "$VPNBIN" ]; then
   exit 1
 fi
 
-PAMPLUGIN=$(dpkg --listfiles openvpn | grep 'openvpn-plugin-auth-pam\.so')
+PAMPLUGIN=$(dpkg --listfiles openvpn | grep 'auth-pam\.so$')
 
 if [ -z "$PAMPLUGIN" ]; then
   echo >&2 Couldn\'t find pam plugin.

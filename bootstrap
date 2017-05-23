@@ -5,6 +5,7 @@
     EASYNETWORKROOT='/root/easy-network';
   fi
 } &&
+sudo apt-get install -y curl &&
 make -C rsa download &&
 make -C vpn install &&
 cat << EOF > .bootstrap.ok &&
