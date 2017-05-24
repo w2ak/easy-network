@@ -6,4 +6,8 @@ mkdir /etc/easy-network &&
 tar -C /etc/easy-network -xf easy-network.tgz &&
 rm easy-network.tgz &&
 cd /etc/easy-network &&
-make bootstrap
+chown -R vagrant:vagrant . &&
+su vagrant -c sh << EOF
+export EASYNETWORKROOT=/home/vagrant/easy-network-install
+make install
+EOF

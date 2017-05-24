@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+import sys,json
+
+envFormat = "export {:}='{:}'\n"
+
+def config2env(js):
+    res=""
+    for k in js:
+        res += envFormat.format(str(k),str(js[k]))
+    return res
+
+if __name__=='__main__':
+  with open(sys.argv[1],'r') as c:
+      js = json.load(c)
+  print(config2env(js))

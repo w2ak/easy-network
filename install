@@ -1,0 +1,16 @@
+#!/bin/sh
+install () {
+  if test -d $1; then
+    mkdir -p $EASYNETWORKROOT/$1
+  else
+    cp $1 $EASYNETWORKROOT/$1
+  fi
+}
+
+tf=$(mktemp)
+test -f config.js &&
+./config2env config.js > $tf &&
+. $tf &&
+rm -f $tf &&
+mkdir -p $EASYNETWORKROOT &&
+sh .installfiles | { while read line; do install "$line"; done }

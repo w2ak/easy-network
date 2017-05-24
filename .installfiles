@@ -1,0 +1,7 @@
+cat << EOF
+config.js
+rsa
+rsa/easy-rsa
+vpn
+EOF
+find rsa/easy-rsa

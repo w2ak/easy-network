@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+import sys,json,re
+
+exportRe = re.compile(r'^export (.*)=(.*)$')
+sourceRe = re.compile(r'^source (.*)$')
+
+def env2config(arg):
+    if type(arg) == type(list()):
+        res = list()
+        for f in arg:
+            res.extend(env2config(f))
+        return res
+    else:
+        main = dict()
+        aux = list()
+        with open(arg,'r') as f:
+            for line in f.readlines():
+                match = exportRe.match(line)
+                if match:
+                    k,v=match.group(1).strip(),match.group(2).strip()
+                    k = k.strip("'").strip('"')
+                    v = v.strip("'").strip('"')
+                    main[k] = v
+                match = sourceRe.match(line)
+                if match:
+                    f = match.group(1).strip().strip("'").strip('"')
+                    aux.extend(env2config(f))
+
+        aux.insert(0,main)
+        return aux
+
+def flattenConfig(l):
+    conf = dict()
+    for d in l:
+        for k in d:
+            if k in conf:
+                raise ValueError("Conflicting environment variables '{:}'.".\
+                        format(k))
+            conf[k] = d[k]
+    return conf
+
+if __name__=='__main__':
+  jsList = env2config(sys.argv[1:])
+  js = flattenConfig(jsList)
+  with open('config.js','w') as c:
+      json.dump(js, c, indent=2)
+      c.write('\n')
