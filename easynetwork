@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+# vim: tw=0
+import sys,os,argparse,json
+
+def vpn_create(args):
+    pass
+
+if __name__=='__main__':
+    main = argparse.ArgumentParser(description='easynetwork helper tool')
+    main_ = main.add_subparsers(title='subcommands')
+
+    main_rsa = main_.add_parser('rsa', help='easy-rsa commands', aliases=['r'])
+
+    main_vpn = main_.add_parser('vpn', help='openvpn commands', aliases=['v'])
+    main_vpn_ = main_vpn.add_subparsers(title='action')
+    main_vpn_create = main_vpn_.add_parser('create', help='create server', aliases=['new','c','n'])
+    main_vpn_create.set_defaults(func=vpn_create)
+
+    args = main.parse_args()
+    try:
+        args.func(args)
+    except AttributeError:
+        main.print_usage()
+        sys.exit(1)
