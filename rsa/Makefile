@@ -7,7 +7,7 @@ all:
 
 bootstrap: .bootstrap.ok
 
-.bootstrap.ok: .download.ok
+.bootstrap.ok: .download.ok .config.ok
 	@cat $< > $@
 
 download: .download.ok
@@ -15,6 +15,12 @@ download: .download.ok
 .download.ok:
 	@./download "$(TGZURL)" "$(TGZSUM)" "$(TGZDIR)"
 	@test -f $@
+
+config: .config.ok
+
+.config.ok: .download.ok
+	@./config
+	@test -f @
 
 wipe:
 	@rm -f .download.ok
