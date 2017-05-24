@@ -15,12 +15,6 @@ bootstrap: .bootstrap.ok
 	@./bootstrap
 	@test -f $@
 
-rsa/.download.ok:
-	@make -C rsa download
-
-vpn/.install.ok:
-	@make -C vpn install
-
 wipe:
 	@rm -f .bootstrap.ok
 	@make -C rsa wipe
@@ -40,3 +34,4 @@ config.js: .bootstrap.ok
 
 install: configfile
 	@./install
+	@make -C rsa postinstall

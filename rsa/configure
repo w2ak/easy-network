@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+import sys,json,os
+
+cnfStringFormat = 'set_var {:} "{:}"\n'
+cnfIntFormat = 'set_var {:} {:d}\n'
+
+def cnfFormat(k,v):
+    fmt = cnfStringFormat
+    if isinstance(v,int):
+        fmt = cnfIntFormat
+    return fmt.format(k,v)
+
+def writeConfig(cnf, to='easy-rsa/vars'):
+    with open(to, 'w') as f:
+        for kv in cnf:
+            k,v=kv
+            f.write(cnfFormat(k,v))
+
+def makeConfig(c, uc):
+    cnf = list()
+    cnf.append(("EASYRSA", os.path.join(c['EASYNETWORKROOT'],'rsa/easy-rsa')))
+    cnf.append(("EASYRSA_PKI", os.path.join(c['EASYNETWORKROOT'],'rsa/pki')))
+    cnf.append(("EASYRSA_DN", 'org'))
+    cnf.append(("EASYRSA_REQ_COUNTRY", uc['country']))
+    cnf.append(("EASYRSA_REQ_PROVINCE", uc['province']))
+    cnf.append(("EASYRSA_REQ_CITY", uc['city']))
+    cnf.append(("EASYRSA_REQ_ORG", uc['org']))
+    cnf.append(("EASYRSA_REQ_EMAIL", uc['email']))
+    cnf.append(("EASYRSA_REQ_OU", uc['ou']))
+    cnf.append(("EASYRSA_ALGO", 'rsa'))
+    cnf.append(("EASYRSA_KEY_SIZE", int(uc['key-size'])))
+    cnf.append(("EASYRSA_CA_EXPIRE", int(uc['ca_expire'])))
+    cnf.append(("EASYRSA_CERT_EXPIRE", int(uc['cert_expire'])))
+    return cnf
+
+def getConfig():
+    with open('../config.js') as f:
+        js = json.load(f)
+    return js
+
+def getUserConfig():
+    with open('../user_config.js') as f:
+        js = json.load(f)
+    return js['rsa']
+
+if __name__=='__main__':
+    config = getConfig()
+    user_config = getUserConfig()
+    rsa_config = makeConfig(config, user_config)
+    writeConfig(rsa_config, to=os.path.join(config['EASYNETWORKROOT'],'rsa','easy-rsa','vars'))
+    easyrsa=os.path.join(config['EASYNETWORKROOT'],'rsa','easy-rsa','easyrsa')
+    os.system('{:} {:} 2>/dev/null'.format(easyrsa, 'init-pki'))
+    print('pki initialized')
+    os.system('{:} {:} 2>/dev/null'.format(easyrsa, 'gen-dh'))
+    print('dhparams created')
+    with open('.config.ok', 'w') as f:
+        f.write('\n')

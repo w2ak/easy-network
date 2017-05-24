@@ -7,19 +7,20 @@
 ## Rough structure of what you should find
 
 * easy-network-root
-  * environment variables                                         **json/shell**
+  * environment variables                                               **json**
     `config.js'
+    `user_config.js'
   * rsa
     * easy-rsa
     * helper script                                                   **python**
   * vpn
-    * main start and stop script                                       **shell**
+    * main start and stop script                                        **json**
     * existing vpns                                                     **json**
     * helper script                                                   **python**
       should create config files, vpn folders (for multi-vpn),
       etc.
   * firewall
-    * main start and stop script                                       **shell**
+    * main start and stop script                                        **json**
     * existing configuration                                            **json**
     * helper script                                                   **python**
       should allow to edit configuration (simplified cli)

@@ -9,5 +9,6 @@ cd /etc/easy-network &&
 chown -R vagrant:vagrant . &&
 su vagrant -c sh << EOF
 export EASYNETWORKROOT=/home/vagrant/easy-network-install
+rm -rf /home/vagrant/easy-network-install
 make install
 EOF
