@@ -1,2 +1,3 @@
 .*.ok
 release/
+__pycache__/
