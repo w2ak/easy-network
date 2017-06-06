@@ -21,7 +21,7 @@ def debugArgFuncs(f):
 
 @debugArgFuncs
 @argFuncs
-def vpn_create(args):
+def vpn_create_server(args):
     print(args)
     return 0
 
@@ -60,13 +60,13 @@ if __name__=='__main__':
     main_vpn_ = main_vpn.add_subparsers(title='action')
 
     ## vpn create
-    main_vpn_create = main_vpn_.add_parser('create', help='create server', aliases=['new','c','n'])
-    main_vpn_create.set_defaults(func=vpn_create)
+    main_vpn_create_server = main_vpn_.add_parser('newserver', help='create server' aliases=['ns'])
+    main_vpn_create_server.set_defaults(func=vpn_create_server)
 
-    main_vpn_create.add_argument('name', help='User-side name of the vpn server.')                                                 ### user-side name
-    main_vpn_create.add_truefalse(dest='crt', opt='crt-auth', default=True, help='Require certificate authentication')             ### crt auth ?
-    main_vpn_create.add_truefalse(dest='pam', opt='pam-auth', default=False, help='Require pam authentication')                    ### pam auth ?
-    main_vpn_create.add_truefalse(dest='key', opt='shared-key', default=False, help='Require the use of an additional shared key') ### shared key ?
+    main_vpn_create_server.add_argument('name', help='User-side name of the vpn server.')                                                 ### user-side name
+    main_vpn_create_server.add_truefalse(dest='crt', opt='crt-auth', default=True, help='Require certificate authentication')             ### crt auth ?
+    main_vpn_create_server.add_truefalse(dest='pam', opt='pam-auth', default=False, help='Require pam authentication')                    ### pam auth ?
+    main_vpn_create_server.add_truefalse(dest='key', opt='shared-key', default=False, help='Require the use of an additional shared key') ### shared key ?
 
     # argument parsing
     args = main.parse_args()

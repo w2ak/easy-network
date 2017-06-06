@@ -1,7 +1,9 @@
 cat << EOF
+easynetwork
 config.js
 rsa
 rsa/easy-rsa
 vpn
 EOF
+find vpn -name '*.py'
 find rsa/easy-rsa

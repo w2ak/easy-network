@@ -1,0 +1,19 @@
+client|server
+
+local a.b.c.d # non-required, accepted for client
+
+port xxx # required for server
+remote address port # required for client
+
+proto tcp|udp # required
+
+dev-type tun # required
+dev tun0 # required in our case
+
+client-cert-not-required # both go together
+username-as-common-name  #
+
+ca /path/to/ca.crt # required
+
+cert /path/to/cert.crt # required unless client and cert-not-required
+key /path/to/cert.key  #

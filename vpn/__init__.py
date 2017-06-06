@@ -45,17 +45,34 @@ def __vpn_cnf(required = True, default = None, choices = None, realname = None):
         return None
     return decorator
 
-@__vpn_cnf(realname='', default='server', choices=['server','client'])
+@__vpn_cnf(required=False, realname='', default='server', choices=['server','client'])
 def type(config, value=None):
+    return 0
+
+@__vpn_cnf(default='443')
+def port(config, value=None):
+    try:
+        i = int(value)
+    except ValueError:
+        raise VpnConfigError('port "{:}" should be an integer string.'.format(value))
+    return 0
+
+@__vpn_cnf(default='udp', choices=['udp','tcp'])
+def proto(config, value=None):
     return 0
 
 @__vpn_cnf(realname='dev-type', default='tun', choices=['tun','tap'])
 def dev_type(config, value=None):
     return 0
 
-@__vpn_cnf(default='udp', choices=['udp','tcp'])
-def proto(config, value=None):
-    return 0
+@__vpn_cnf(required=False)
+def dev(config, value=None):
+    try:
+        if len(value) > 0:
+            return 0
+        raise VpnConfigError('dev name should not be empty')
+    except Exception:
+        raise VpnConfigError('invalid dev name')
 
 class VpnConfig:
     def __init__(self, config = None):
